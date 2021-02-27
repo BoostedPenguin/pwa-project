@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+
+# abort on errors
+set -e
+
+# build
+npm run build
+
+# navigate into the build output directory
+cd dist
+
+# pushing to github pages
+git init
+git add -A
+git commit -m 'deploy'
+git push -f git@github.com:boostedpenguin/pwa-project.git master:gh-pages
+
+cd -
