@@ -10,6 +10,7 @@ jobs:
       - name: Cypress tests
         uses: cypress-io/github-action@v2
         with:
+          working-directory: ./
           # just for full picture after installing Cypress
           build: npx cypress info
 
@@ -22,6 +23,7 @@ jobs:
       - name: Cypress tests
         uses: cypress-io/github-action@v2
         with:
+          working-directory: ./
           # just for full picture after installing Cypress
           build: npx cypress info
 
@@ -34,6 +36,7 @@ jobs:
       - name: Cypress tests
         uses: cypress-io/github-action@v2
         with:
+          working-directory: ./
           build: npx cypress info
 
   basic-on-windows:
@@ -45,6 +48,7 @@ jobs:
       - name: Cypress tests
         uses: cypress-io/github-action@v2
         with:
+          working-directory: ./
           build: npx cypress info
 
   basic-on-mac:
@@ -56,4 +60,5 @@ jobs:
       - name: Cypress tests
         uses: cypress-io/github-action@v2
         with:
+          working-directory: ./
           build: npx cypress info
