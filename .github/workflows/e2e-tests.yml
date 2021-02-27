@@ -6,59 +6,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: Cypress tests
+      - name: Cypress run
         uses: cypress-io/github-action@v2
-        with:
-          working-directory: ./
-          # just for full picture after installing Cypress
-          build: npx cypress info
 
-  basic-ubuntu-18:
-    runs-on: ubuntu-18.04
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
 
-      - name: Cypress tests
-        uses: cypress-io/github-action@v2
-        with:
-          working-directory: ./
-          # just for full picture after installing Cypress
-          build: npx cypress info
-
-  basic-ubuntu-20:
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Cypress tests
-        uses: cypress-io/github-action@v2
-        with:
-          working-directory: ./
-          build: npx cypress info
-
-  basic-on-windows:
-    runs-on: windows-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Cypress tests
-        uses: cypress-io/github-action@v2
-        with:
-          working-directory: ./
-          build: npx cypress info
-
-  basic-on-mac:
-    runs-on: macos-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Cypress tests
-        uses: cypress-io/github-action@v2
-        with:
-          working-directory: ./
-          build: npx cypress info
