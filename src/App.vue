@@ -34,7 +34,8 @@
     </v-app-bar>
 
     <v-main>
-      <HelloWorld />
+      <!-- <HelloWorld /> -->
+      <Camera />
     </v-main>
 
     <div class="update-dialog" v-if="prompt">
@@ -95,11 +96,11 @@
 </style>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import Camera from "./components/Camera.vue";
 export default {
   name: "App",
   components: {
-    HelloWorld,
+    Camera,
   },
   methods: {
     async update() {
