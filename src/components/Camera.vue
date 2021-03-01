@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="videoDevices > 0" class="wrapper">
+    <div v-show="videoDevices.length > 0" class="wrapper">
       <video
         class="video"
         :class="facingMode === 'user' ? 'front' : ''"
@@ -8,20 +8,29 @@
       />
       <canvas style="display: none" ref="canva" />
 
-      <v-btn v-if="videoDevices.length > 1" color="secondary" depressed small
-        >Swap</v-btn
+      <button
+        v-if="videoDevices.length > 1"
+        class="button is-rounded is-outlined switch-button"
+        @click="switchCamera"
+        :disabled="switchingCamera"
       >
+        Swap
+      </button>
       <div class="photo-button-container">
-        <v-btn color="primary" elevation="2" outlined>Take</v-btn>
+        <v-btn elevation="2" outlined @click="TakePhoto">Shoot</v-btn>
       </div>
+      <photos-gallery class="gallery" :photos="photos" />
     </div>
-    <div>No camera on this device</div>
+    <div v-show="videoDevices == 0">No camera on this device</div>
   </div>
 </template>
 
 <script>
+import PhotosGallery from "./PhotosGallery.vue";
 export default {
-  components: {},
+  components: {
+    PhotosGallery,
+  },
   data() {
     return {
       photos: [],
@@ -78,8 +87,6 @@ export default {
   async mounted() {
     const devices = await navigator.mediaDevices.enumerateDevices();
     this.videoDevices = devices.filter((d) => d.kind === "videoinput");
-
-    if (this.videoDevices == 0) return;
     await this.StartRecording(
       this.videoDevices.length === 1 ? "user" : "environment"
     );
@@ -93,6 +100,7 @@ export default {
   transform: scaleX(-1);
 }
 .wrapper {
+  background-color: black;
   display: grid;
   width: 100vw;
   height: 100vh;
