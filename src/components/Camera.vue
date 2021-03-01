@@ -1,24 +1,21 @@
 <template>
-  <div class="wrapper">
-    <video
-      class="video"
-      :class="facingMode === 'user' ? 'front' : ''"
-      ref="video"
-    />
-    <canvas style="display: none" ref="canva" />
+  <div>
+    <div v-if="videoDevices > 0" class="wrapper">
+      <video
+        class="video"
+        :class="facingMode === 'user' ? 'front' : ''"
+        ref="video"
+      />
+      <canvas style="display: none" ref="canva" />
 
-    <button
-      v-if="videoDevices.length > 1"
-      class="button is-rounded is-outlined switch-button"
-      @click="switchCamera"
-      :disabled="switchingCamera"
-    >
-      btn
-    </button>
-    <div class="photo-button-container">
-      <button class="button photo-button" @click="TakePhoto">btn</button>
+      <v-btn v-if="videoDevices.length > 1" color="secondary" depressed small
+        >Swap</v-btn
+      >
+      <div class="photo-button-container">
+        <v-btn color="primary" elevation="2" outlined>Take</v-btn>
+      </div>
     </div>
-    <photos-gallery class="gallery" :photos="photos" />
+    <div>No camera on this device</div>
   </div>
 </template>
 
@@ -81,6 +78,8 @@ export default {
   async mounted() {
     const devices = await navigator.mediaDevices.enumerateDevices();
     this.videoDevices = devices.filter((d) => d.kind === "videoinput");
+
+    if (this.videoDevices == 0) return;
     await this.StartRecording(
       this.videoDevices.length === 1 ? "user" : "environment"
     );
@@ -94,7 +93,6 @@ export default {
   transform: scaleX(-1);
 }
 .wrapper {
-  background-color: black;
   display: grid;
   width: 100vw;
   height: 100vh;
