@@ -7,7 +7,6 @@
         ref="video"
       />
       <canvas style="display: none" ref="canva" />
-
       <button
         v-if="videoDevices.length > 1"
         class="button is-rounded is-outlined switch-button"
@@ -87,6 +86,8 @@ export default {
   async mounted() {
     const devices = await navigator.mediaDevices.enumerateDevices();
     this.videoDevices = devices.filter((d) => d.kind === "videoinput");
+
+    if (this.videoDevices.length == 0) return;
     await this.StartRecording(
       this.videoDevices.length === 1 ? "user" : "environment"
     );
