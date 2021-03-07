@@ -2,8 +2,7 @@
   <v-app>
     <navigation-bar />
     <v-main>
-      <user-post />
-      <user-post />
+      <user-post v-for="item in 5" :key="item" />
     </v-main>
 
     <div class="update-dialog" v-if="prompt">

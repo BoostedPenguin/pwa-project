@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-container>
     <v-app-bar app color="primary" dark>
       <v-app-bar-nav-icon
         v-show="$vuetify.breakpoint.mobile"
@@ -28,15 +28,17 @@
 
     <!-- Left drawer -->
     <v-navigation-drawer
+      color="#BDC2DF"
       v-model="mobile_drawer_left"
-      absolute
+      fixed
       left
+      app
       :temporary="$vuetify.breakpoint.mobile"
       :permanent="!$vuetify.breakpoint.mobile"
     >
       <v-list-item>
         <v-list-item-content>
-          <v-list-item-title class="title"> Application </v-list-item-title>
+          <v-list-item-title class="title"> PWA Application </v-list-item-title>
           <v-list-item-subtitle> Settings </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
@@ -58,9 +60,11 @@
 
     <!-- Right drawer -->
     <v-navigation-drawer
+      color="#BDC2DF"
       v-if="mobile_drawer_right || !$vuetify.breakpoint.mobile"
       v-model="mobile_drawer_right"
-      absolute
+      fixed
+      app
       right
       class="right-nav"
       :temporary="$vuetify.breakpoint.mobile"
@@ -80,7 +84,7 @@
 
       <v-divider></v-divider>
 
-      <v-list v-for="item in 5" :key="item" dense>
+      <v-list v-for="item in 25" :key="item" dense>
         <v-list-item link>
           <v-list-item-avatar>
             <v-img
@@ -95,7 +99,7 @@
         <v-divider></v-divider>
       </v-list>
     </v-navigation-drawer>
-  </div>
+  </v-container>
 </template>
 
 <script>
@@ -103,16 +107,16 @@ export default {
   data() {
     return {
       items: [
-        { title: "Dashboard", icon: "mdi-view-dashboard" },
+        { title: "Some other thing", icon: "mdi-view-dashboard" },
         { title: "Share image", icon: "mdi-image" },
         { title: "About", icon: "mdi-help-box" },
       ],
       mobile_drawer_left: false,
       mobile_drawer_right: false,
       group: false,
+      lastState: !this.$vuetify.breakpoint.mobile,
     };
   },
-  mounted() {},
 };
 </script>
 

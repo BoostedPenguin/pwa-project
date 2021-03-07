@@ -2,7 +2,7 @@
   <v-container>
     <v-row class="d-flex justify-center">
       <v-col sm="12" md="8" xl="6">
-        <v-card :loading="loading" class="mx-auto">
+        <v-card :loading="loading" elevation="5" class="mx-auto">
           <template slot="progress">
             <v-progress-linear
               color="secondary"
@@ -20,7 +20,6 @@
           </v-card-title>
           <v-img
             contain
-            height="250"
             src="https://www.coworker.com/mag/wp-content/uploads/2018/04/1104x777-1104x640.png"
           ></v-img>
 
