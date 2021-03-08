@@ -1,8 +1,12 @@
 <template>
   <v-app>
     <navigation-bar />
+    <div v-if="alert.message" :class="`alert ${alert.type}`">
+      {{ alert.message }}
+    </div>
     <v-main>
-      <user-post v-for="item in 5" :key="item" />
+      <router-view></router-view>
+      <!-- <user-post v-for="item in 5" :key="item" /> -->
     </v-main>
 
     <div class="update-dialog" v-if="prompt">
@@ -64,12 +68,21 @@
 
 <script>
 import NavigationBar from "./components/NavigationBar.vue";
-import UserPost from "./components/UserPost.vue";
 export default {
   name: "App",
   components: {
     NavigationBar,
-    UserPost,
+  },
+  computed: {
+    alert() {
+      return this.$store.state.alert;
+    },
+  },
+  watch: {
+    $route(to, from) {
+      // clear alert on location change
+      this.$store.dispatch("alert/clear");
+    },
   },
   methods: {
     async update() {
