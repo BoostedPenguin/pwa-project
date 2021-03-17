@@ -46,13 +46,15 @@
       <v-divider></v-divider>
 
       <v-list dense nav>
-        <v-list-item v-for="item in items" :key="item.title" link>
+        <v-list-item link>
           <v-list-item-icon>
-            <v-icon>{{ item.icon }}</v-icon>
+            <v-icon>mdi-image</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
+            <v-list-item-title @click="addImageDialog = true"
+              >Add image</v-list-item-title
+            >
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -187,13 +189,20 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <!-- Adding image interface  -->
+    <add-image v-bind:addImageDialog="addImageDialog"></add-image>
   </v-container>
 </template>
 
 <script>
 import { userService } from "../_services/user.service";
+import AddImage from "./AddImage.vue";
 
 export default {
+  components: {
+    AddImage,
+  },
   data() {
     return {
       rules: {
@@ -204,15 +213,15 @@ export default {
           return pattern.test(value) || "Invalid e-mail.";
         },
       },
-      items: [
-        { title: "Some other thing", icon: "mdi-view-dashboard" },
-        { title: "Share image", icon: "mdi-image" },
-        { title: "About", icon: "mdi-help-box" },
-      ],
       mobile_drawer_left: false,
       mobile_drawer_right: false,
       group: false,
       lastState: !this.$vuetify.breakpoint.mobile,
+
+      // Adding images
+      addImageDialog: false,
+
+      // Adding user
       addingUserDialog: false,
       addingUser: {
         email: "",
