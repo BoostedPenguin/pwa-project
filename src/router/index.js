@@ -2,7 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../components/Auth/Home.vue'
 import LoginPage from '../components/Auth/LoginPage.vue'
-import NavigationBar from '../components/NavigationBar.vue'
+import MainLoggedPage from '../views/MainLoggedPage.vue'
+import Verify from '../components/Auth/Verify.vue'
 import { userService } from '../_services/user.service'
 import { store } from '../store/index'
 
@@ -18,9 +19,12 @@ const routes = [
     path: '/login', component: LoginPage,
   },
   {
+    path: '/account/verify/:token', component: Verify
+  },
+  {
     path: '/organization/:name',
-    name: 'NavigationBar',
-    component: NavigationBar,
+    name: 'MainLoggedPage',
+    component: MainLoggedPage,
     beforeEnter: async (to, from, next) => {
       const loggedIn = localStorage.getItem('user')
 
@@ -49,7 +53,12 @@ router.beforeEach((to, from, next) => {
 
   // redirect to login page if not logged in and trying to access a restricted page
   const publicPages = ['/login', '/']
-  const authRequired = !publicPages.includes(to.path)
+  let authRequired = !publicPages.includes(to.path)
+
+  if (to.path.includes('/account/verify')) {
+    authRequired = false
+  }
+
   const loggedIn = localStorage.getItem('user')
 
   if (authRequired && !loggedIn) {

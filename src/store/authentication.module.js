@@ -16,7 +16,7 @@ export const authentication = {
                 .then(
                     user => {
                         commit('loginSuccess', user)
-                        router.push({ name: 'NavigationBar', params: { name: user.organization.name } })
+                        router.push({ name: 'MainLoggedPage', params: { name: user.organization.name } })
                     },
                     error => {
                         commit('loginFailure', error)
@@ -32,7 +32,19 @@ export const authentication = {
             userService.createOrganization(data)
                 .then(user => {
                     commit('loginSuccess', user)
-                    router.push({ name: 'NavigationBar', params: { name: user.organization.name } })
+                    router.push({ name: 'MainLoggedPage', params: { name: user.organization.name } })
+                },
+                    error => {
+                        commit('loginFailure', error)
+                        dispatch('alert/error', error, { root: true })
+                    }
+                )
+        },
+        verifyAccount({ dispatch, commit }, data) {
+            userService.verifyAccount(data)
+                .then(user => {
+                    commit('loginSuccess', user)
+                    router.push({ name: 'MainLoggedPage', params: { name: user.organization.name } })
                 },
                     error => {
                         commit('loginFailure', error)

@@ -6,6 +6,8 @@ export const userService = {
     getAll,
     createOrganization,
     getOrganization,
+    addUser,
+    verifyAccount
 }
 
 
@@ -73,7 +75,42 @@ function createOrganization(data) {
         })
 }
 
+function addUser(data) {
+    let user = JSON.parse(localStorage.getItem('user'))
+
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + user.token },
+        body: JSON.stringify(data)
+    }
+
+    return fetch(`${process.env.VUE_APP_BASE_BACKEND_ROOT}/account/add`, requestOptions)
+        .then(handleResponse)
+        .then(user => {
+            return user.link
+        })
+}
+
+function verifyAccount(data) {
+    console.log(data)
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    }
+
+    return fetch(`${process.env.VUE_APP_BASE_BACKEND_ROOT}/account/verify`, requestOptions)
+        .then(handleResponse)
+        .then(user => {
+            if (user.token) {
+                localStorage.setItem('user', JSON.stringify(user))
+            }
+            return user
+        })
+}
+
 function handleResponse(response) {
+
     return response.text().then(text => {
         const data = text && JSON.parse(text)
         if (!response.ok) {
@@ -86,7 +123,6 @@ function handleResponse(response) {
             const error = (data && data.message) || response.statusText
             return Promise.reject(error)
         }
-
         return data
     })
 }
