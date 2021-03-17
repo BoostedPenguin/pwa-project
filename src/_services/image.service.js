@@ -5,37 +5,49 @@ export const imageService = {
     getImages
 }
 
-function uploadImage(image) {
+function uploadImage(data) {
+
+    const formData = new FormData()
+    formData.append("image", data.currentFile)
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
+        body: formData
     }
-
     const imgbbKey = process.env.VUE_APP_IMGBB_API_KEY
 
-
-    return fetch(`https://api.imgbb.com/1/upload?key=${imgbbKey}&${image}`, requestOptions)
+    return fetch(`https://api.imgbb.com/1/upload?key=${imgbbKey}`, requestOptions)
+        .then(handleResponse)
         .then(response => {
-            uploadImageInformation(response).then(data => {
-                return data
-            })
+            return uploadImageInformation(response, data)
+                .then(data => {
+                    return data
+                })
         })
 }
 
-function uploadImageInformation(data) {
+function uploadImageInformation(data, imageDetails) {
     let user = JSON.parse(localStorage.getItem('user'))
+
+    const uploaded = new Date(parseInt(data.data.time) * 1000)
+    const requestData = {
+        id: data.data.id,
+        url: data.data.url,
+        deleteUrl: data.data.delete_url,
+        UploadedAt: uploaded,
+        title: imageDetails.title,
+        description: imageDetails.description,
+    }
 
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + user.token },
-        body: JSON.stringify(data)
+        body: JSON.stringify(requestData)
     }
 
     return fetch(`${process.env.VUE_APP_BASE_BACKEND_ROOT}/image/add`, requestOptions)
         .then(handleResponse)
         .then(response => {
-            return response.url
+            return response
         })
 }
 

@@ -5,6 +5,7 @@ import { alert } from './alert.module'
 import { authentication } from './authentication.module'
 import { users } from './users.module'
 import { organization } from './organization.module'
+import { images } from './images.module'
 Vue.use(Vuex)
 
 export const store = new Vuex.Store({
@@ -12,6 +13,7 @@ export const store = new Vuex.Store({
     alert,
     authentication,
     users,
-    organization
+    organization,
+    images
   }
 })

@@ -191,7 +191,7 @@
     </v-dialog>
 
     <!-- Adding image interface  -->
-    <add-image v-bind:addImageDialog="addImageDialog"></add-image>
+    <add-image></add-image>
   </v-container>
 </template>
 
@@ -217,9 +217,6 @@ export default {
       mobile_drawer_right: false,
       group: false,
       lastState: !this.$vuetify.breakpoint.mobile,
-
-      // Adding images
-      addImageDialog: false,
 
       // Adding user
       addingUserDialog: false,
