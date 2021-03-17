@@ -1,44 +1,53 @@
 <template>
-  <div>
-    <div>
-      Email: test<br />
-      Password: test
-    </div>
-    <h2>Login</h2>
-    <form @submit.prevent="handleSubmit">
-      <div>
-        <label for="Email">Email</label>
-        <input
-          type="text"
-          v-model="email"
-          name="Email"
-          :class="{ 'is-invalid': submitted && !email }"
-        />
-        <div v-show="submitted && !email" class="invalid-feedback">
-          Email is required
-        </div>
-      </div>
-      <div>
-        <label htmlFor="password">Password</label>
-        <input
-          type="password"
-          v-model="password"
-          name="password"
-          :class="{ 'is-invalid': submitted && !password }"
-        />
-        <div v-show="submitted && !password" class="invalid-feedback">
-          Password is required
-        </div>
-      </div>
-      <div>
-        <button :disabled="loggingIn">Login</button>
-        <img
-          v-show="loggingIn"
-          src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
-        />
-      </div>
-    </form>
-  </div>
+  <v-container fluid class="main-background">
+    <v-row class="justify-center">
+      <v-col cols="12" sm="6" md="4" lg="3">
+        <v-card class="py-5" elevation="2">
+          <v-card-actions>
+            <v-row class="justify-center">
+              <v-col cols="12" sm="12">
+                <div class="headline">Login</div>
+              </v-col>
+
+              <v-col cols="12" sm="12">
+                <v-text-field
+                  required
+                  v-model="email"
+                  counter="50"
+                  :rules="[rules.required, rules.email]"
+                  label="Email"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="12">
+                <v-text-field
+                  type="password"
+                  required
+                  v-model="password"
+                  counter="50"
+                  :rules="[rules.required, rules.counter]"
+                  label="Password"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+          </v-card-actions>
+          <v-row class="mt-5">
+            <v-col cols="6" class="text-left">
+              <v-btn to="/" outlined class="ma-2" @click="currentPage = 0">
+                <v-icon left dark> mdi-arrow-left </v-icon>
+                Back
+              </v-btn>
+            </v-col>
+            <v-col cols="6" class="text-right">
+              <v-btn @click="handleSubmit" color="secondary" class="ma-2">
+                <v-icon left dark> mdi-plus </v-icon>
+                Login
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -47,7 +56,17 @@ export default {
     return {
       email: "",
       password: "",
-      submitted: false,
+      rules: {
+        required: (value) => !!value || "Required.",
+        counter: (value) => {
+          if (value) return value.length < 50 || "Max 50 characters";
+          return false;
+        },
+        email: (value) => {
+          const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+          return pattern.test(value) || "Invalid e-mail.";
+        },
+      },
     };
   },
   computed: {
@@ -60,8 +79,7 @@ export default {
     this.$store.dispatch("authentication/logout");
   },
   methods: {
-    handleSubmit(e) {
-      this.submitted = true;
+    handleSubmit() {
       const { email, password } = this;
       const { dispatch } = this.$store;
       if (email && password) {
@@ -71,3 +89,10 @@ export default {
   },
 };
 </script>
+<style>
+body,
+html .main-background {
+  background-color: #3949ab;
+  min-height: 100%;
+}
+</style>

@@ -84,7 +84,7 @@
 
       <v-divider></v-divider>
 
-      <v-list v-for="item in 25" :key="item" dense>
+      <v-list v-for="item in 5" :key="item" dense>
         <v-list-item link>
           <v-list-item-avatar>
             <v-img
@@ -99,11 +99,17 @@
         <v-divider></v-divider>
       </v-list>
     </v-navigation-drawer>
+    <user-post v-for="index in 4" :key="index"></user-post>
   </v-container>
 </template>
 
 <script>
+import UserPost from "./UserPost.vue";
+
 export default {
+  components: {
+    UserPost,
+  },
   data() {
     return {
       items: [

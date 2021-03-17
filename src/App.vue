@@ -1,11 +1,12 @@
 <template>
   <v-app>
-    <navigation-bar />
     <div v-if="alert.message" :class="`alert ${alert.type}`">
       {{ alert.message }}
     </div>
     <v-main>
-      <router-view></router-view>
+      <transition name="fade">
+        <router-view></router-view>
+      </transition>
       <!-- <user-post v-for="item in 5" :key="item" /> -->
     </v-main>
 
@@ -64,15 +65,20 @@
     }
   }
 }
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
 </style>
 
 <script>
-import NavigationBar from "./components/NavigationBar.vue";
 export default {
   name: "App",
-  components: {
-    NavigationBar,
-  },
+  components: {},
   computed: {
     alert() {
       return this.$store.state.alert;
