@@ -1,19 +1,24 @@
 import { userService } from '../_services/user.service'
 
 const user = JSON.parse(localStorage.getItem('user'))
-const initialState = {
-    organization: {},
-}
 
 export const organization = {
     namespaced: true,
-    state: initialState,
+    state: {
+        organization: {},
+        users: {},
+    },
     actions: {
-        getOrganization({ commit }) {
+        getOrganization({ commit, dispatch }) {
             userService.getOrganization()
                 .then(data => {
-                    console.log(data)
-                    commit('organizationRequest', data)
+                    const org = {
+                        name: data.name,
+                        id: data.id,
+                    }
+                    const { users, ...rest } = data
+                    commit('organizationRequest', { org, users })
+                    dispatch('images/getImages', null, { root: true })
                     return data
                 },
                     error => {
@@ -22,8 +27,9 @@ export const organization = {
         }
     },
     mutations: {
-        organizationRequest(state, organization) {
-            state.organization = organization
+        organizationRequest(state, { org, users }) {
+            state.organization = org
+            state.users = users
         },
     }
 }

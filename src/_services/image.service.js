@@ -55,9 +55,8 @@ function getImages() {
     let user = JSON.parse(localStorage.getItem('user'))
 
     const requestOptions = {
-        method: 'POST',
+        method: 'GET',
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + user.token },
-        body: JSON.stringify(data)
     }
 
     return fetch(`${process.env.VUE_APP_BASE_BACKEND_ROOT}/image`, requestOptions)

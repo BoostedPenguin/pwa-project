@@ -6,10 +6,18 @@
           <v-card-title>
             <v-row>
               <v-col cols="6" class="text-left"> Upload image </v-col>
-              <v-col cols="6" class="text-right"> Camera </v-col>
             </v-row>
           </v-card-title>
           <v-card-text>
+            <v-row>
+              <v-col sm="12">
+                <v-file-input
+                  accept="image/*"
+                  label="Image upload"
+                  @change="selectImage"
+                ></v-file-input>
+              </v-col>
+            </v-row>
             <div class="canvas-border">
               <p style="text-align: center">Preview</p>
               <canvas id="canvas"></canvas>
@@ -26,11 +34,6 @@
                   v-model="imageData.description"
                   label="Description (optional)"
                 ></v-text-field>
-                <v-file-input
-                  accept="image/*"
-                  label="Image upload"
-                  @change="selectImage"
-                ></v-file-input>
               </v-col>
             </v-row>
           </v-card-text>
@@ -40,16 +43,12 @@
         </v-card>
       </v-col>
     </v-row>
-    <camera v-if="openCamera" />
   </v-container>
 </template>
 
 <script>
-import Camera from "./Camera";
 export default {
-  components: {
-    Camera,
-  },
+  components: {},
   data() {
     return {
       imageData: {
@@ -58,7 +57,7 @@ export default {
         description: "",
       },
 
-      openCamera: false,
+      openCamera: true,
       base64: undefined,
     };
   },

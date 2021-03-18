@@ -46,15 +46,31 @@
       <v-divider></v-divider>
 
       <v-list dense nav>
-        <v-list-item link>
+        <v-list-item link @click="currentPage = 'ShowPosts'">
+          <v-list-item-icon>
+            <v-icon>mdi-home</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>Homepage</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item link @click="currentPage = 'AddImage'">
           <v-list-item-icon>
             <v-icon>mdi-image</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
-            <v-list-item-title @click="addImageDialog = true"
-              >Add image</v-list-item-title
-            >
+            <v-list-item-title>Upload image</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item link @click="currentPage = 'Camera'">
+          <v-list-item-icon>
+            <v-icon>mdi-camera</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>Take a photo</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -91,7 +107,7 @@
 
       <v-divider></v-divider>
 
-      <v-list v-for="item in 5" :key="item" dense>
+      <v-list v-for="item in getOrganizationParticipants" :key="item.id" dense>
         <v-list-item link>
           <v-list-item-avatar>
             <v-img
@@ -100,7 +116,9 @@
           </v-list-item-avatar>
 
           <v-list-item-content>
-            <v-list-item-title>Johny Silverhand</v-list-item-title>
+            <v-list-item-title>{{
+              `${item.firstName} ${item.lastName}`
+            }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-divider></v-divider>
@@ -190,18 +208,24 @@
       </v-card>
     </v-dialog>
 
-    <!-- Adding image interface  -->
-    <add-image></add-image>
+    <!-- Main content interface  -->
+    <transition name="fade" mode="out-in">
+      <component v-bind:is="currentComponent" />
+    </transition>
   </v-container>
 </template>
 
 <script>
 import { userService } from "../_services/user.service";
 import AddImage from "./AddImage.vue";
+import ShowPosts from "./ShowPosts.vue";
+import Camera from "./Camera.vue";
 
 export default {
   components: {
     AddImage,
+    ShowPosts,
+    Camera,
   },
   data() {
     return {
@@ -218,6 +242,9 @@ export default {
       group: false,
       lastState: !this.$vuetify.breakpoint.mobile,
 
+      // Current page
+      currentPage: "ShowPosts",
+
       // Adding user
       addingUserDialog: false,
       addingUser: {
@@ -232,9 +259,18 @@ export default {
       addingUserVerificationLink: "",
     };
   },
+  mounted() {
+    this.$store.dispatch("organization/getOrganization");
+  },
   computed: {
+    currentComponent() {
+      return this.currentPage;
+    },
     getAdminStatus() {
       return this.$store.state.authentication.user.admin;
+    },
+    getOrganizationParticipants() {
+      return this.$store.state.organization.users;
     },
   },
   methods: {

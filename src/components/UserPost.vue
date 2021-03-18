@@ -16,16 +16,13 @@
                 src="https://americanindependent.com/wp-content/uploads/2019/01/AP_19014569142266-1068x721.jpg"
               ></v-img>
             </v-avatar>
-            <span class="ml-2">Look at the office space</span>
+            <span class="ml-2">{{ post.title }}</span>
           </v-card-title>
-          <v-img
-            contain
-            src="https://www.coworker.com/mag/wp-content/uploads/2018/04/1104x777-1104x640.png"
-          ></v-img>
+          <v-img max-height="300px" contain :src="post.url"></v-img>
 
           <v-card-text>
             <div>
-              Some small description about the given topic above it's optional
+              {{ post.description }}
             </div>
           </v-card-text>
 
@@ -64,6 +61,7 @@ export default {
       loading: false,
     };
   },
+  props: ["post"],
 };
 </script>
 

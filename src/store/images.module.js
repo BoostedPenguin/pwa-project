@@ -5,11 +5,16 @@ export const images = {
     namespaced: true,
     state: {
         images: {},
-        smth: "",
     },
     actions: {
         uploadImage({ dispatch, commit }, data) {
             imageService.uploadImage(data)
+                .then(response => {
+                    commit('saveImages', response)
+                })
+        },
+        getImages({ dispatch, commit }) {
+            imageService.getImages()
                 .then(response => {
                     commit('saveImages', response)
                 })
