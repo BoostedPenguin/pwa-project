@@ -1,5 +1,5 @@
 <template>
-  <transition-group class="photos-container" name="list-animated">
+  <transition-group class="container" name="list-animated">
     <photo
       class="list-animated-item"
       v-for="photo in photos"

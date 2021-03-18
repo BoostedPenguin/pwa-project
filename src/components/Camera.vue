@@ -1,23 +1,26 @@
 <template>
   <div>
-    <div v-show="videoDevices.length > 0" class="wrapper">
-      <video
-        class="video"
-        :class="facingMode === 'user' ? 'front' : ''"
-        ref="video"
-      />
-      <canvas style="display: none" ref="canva" />
-      <button
-        v-if="videoDevices.length > 1"
-        class="button is-rounded is-outlined switch-button"
-        @click="switchCamera"
-        :disabled="switchingCamera"
-      >
-        Swap
-      </button>
-      <div class="photo-button-container">
+    <div v-show="videoDevices.length > 0" class="container">
+      <v-row class="justify-center">
+        <video
+          class="video"
+          :class="facingMode === 'user' ? 'front' : ''"
+          ref="video"
+        />
+        <canvas style="display: none" ref="canva" />
+        <button
+          v-if="videoDevices.length > 1"
+          class="button is-rounded is-outlined switch-button"
+          @click="switchCamera"
+          :disabled="switchingCamera"
+        >
+          Swap
+        </button>
+      </v-row>
+
+      <v-row class="justify-center mt-4">
         <v-btn elevation="2" outlined @click="TakePhoto">Shoot</v-btn>
-      </div>
+      </v-row>
       <photos-gallery class="gallery" :photos="photos" />
     </div>
     <div v-show="videoDevices == 0">No camera on this device</div>
@@ -100,22 +103,13 @@ export default {
   -webkit-transform: scaleX(-1);
   transform: scaleX(-1);
 }
-.wrapper {
-  background-color: black;
-  display: grid;
-  width: 100vw;
-  height: 100vh;
-  grid-template-columns: [left] 90vw [bs] 5vw [es] 5vw [right];
-  grid-template-rows: [top] 5vh [bs] 5vh [es] 60vh [middle] 10vh [bottom] 20vh [end];
-  justify-items: center;
-  overflow: hidden;
-}
 .video {
   height: 100%;
   grid-column: left/right;
   grid-row: top / bottom;
   user-select: none;
   max-width: unset;
+  overflow: hidden;
 }
 .switch-button {
   grid-column: bs / es;
