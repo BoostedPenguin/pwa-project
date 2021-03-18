@@ -8,14 +8,14 @@
           ref="video"
         />
         <canvas style="display: none" ref="canva" />
-        <button
+        <!-- <button
           v-if="videoDevices.length > 1"
           class="button is-rounded is-outlined switch-button"
           @click="switchCamera"
           :disabled="switchingCamera"
         >
           Swap
-        </button>
+        </button> -->
       </v-row>
 
       <v-row class="justify-center mt-4">
