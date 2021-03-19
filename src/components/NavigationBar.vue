@@ -6,24 +6,20 @@
         @click.stop="mobile_drawer_left = !mobile_drawer_left"
       ></v-app-bar-nav-icon>
 
-      <v-toolbar-title>Page title</v-toolbar-title>
-
       <v-spacer></v-spacer>
-      <div class="top-nav-icon">
-        <v-btn icon>
-          <v-icon>mdi-account-circle</v-icon>
-        </v-btn>
-        <v-btn icon>
-          <v-icon>mdi-bell</v-icon>
-        </v-btn>
-        <v-btn
-          icon
-          v-show="$vuetify.breakpoint.mobile"
-          @click.stop="mobile_drawer_right = !mobile_drawer_right"
-        >
-          <v-icon>mdi-account-multiple</v-icon>
-        </v-btn>
-      </div>
+      <v-btn icon>
+        <v-icon color="white">mdi-account-circle</v-icon>
+      </v-btn>
+      <v-btn icon>
+        <v-icon color="white">mdi-bell</v-icon>
+      </v-btn>
+      <v-btn
+        icon
+        v-show="$vuetify.breakpoint.mobile"
+        @click.stop="mobile_drawer_right = !mobile_drawer_right"
+      >
+        <v-icon color="white">mdi-account-multiple</v-icon>
+      </v-btn>
     </v-app-bar>
 
     <!-- Left drawer -->
@@ -311,7 +307,7 @@ export default {
             this.addingUserRequired = false;
             this.addingUserDialog = false;
             this.addingUserVerificationLinkDialog = true;
-            this.addingUserVerificationLink = `${process.env.VUE_APP_BASE_FRONTEND_ROOT}/account/verify/${response}`;
+            this.addingUserVerificationLink = `${process.env.VUE_APP_BASE_FRONTEND_ROOT}#/account/verify/${response}`;
           })
           .catch((error) => {
             this.addingUserError = error;
