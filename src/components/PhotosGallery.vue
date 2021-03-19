@@ -1,6 +1,12 @@
 <template>
   <v-container>
     <v-row>
+      <v-alert v-if="getError" dense outlined type="error">
+        An unexpected error occurred. Please try again later.
+      </v-alert>
+      <v-alert v-if="getSuccess" dense outlined type="success">
+        Successfully uploaded an image
+      </v-alert>
       <v-col cols="12">
         <img v-if="photo" :key="photo.id" :src="photo.src" alt="Well" />
       </v-col>
@@ -38,6 +44,17 @@ export default {
     };
   },
   props: ["photo", "takingPicture"],
+  computed: {
+    getError() {
+      return this.$store.state.images.errorUpload;
+    },
+    getSuccess() {
+      return this.$store.state.images.successUpload;
+    },
+  },
+  beforeDestroy() {
+    this.$store.commit("images/resetStatus");
+  },
   methods: {
     goBack() {
       this.$emit("update:takingPicture", true);

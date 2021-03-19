@@ -2,6 +2,12 @@
   <v-container>
     <v-row class="d-flex justify-center">
       <v-col xl="6">
+        <v-alert v-if="getError" dense outlined type="error">
+          An unexpected error occurred. Please try again later.
+        </v-alert>
+        <v-alert v-if="getSuccess" dense outlined type="success">
+          Successfully uploaded an image
+        </v-alert>
         <v-card>
           <v-card-title>
             <v-row>
@@ -60,6 +66,17 @@ export default {
       openCamera: true,
       base64: undefined,
     };
+  },
+  computed: {
+    getError() {
+      return this.$store.state.images.errorUpload;
+    },
+    getSuccess() {
+      return this.$store.state.images.successUpload;
+    },
+  },
+  beforeDestroy() {
+    this.$store.commit("images/resetStatus");
   },
 
   methods: {

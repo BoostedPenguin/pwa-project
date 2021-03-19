@@ -77,6 +77,7 @@ export default {
   created() {
     // reset login status
     this.$store.dispatch("authentication/logout");
+    localStorage.clear();
   },
   methods: {
     handleSubmit() {

@@ -11,18 +11,18 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/pwa-project/',
+    path: '/',
     name: 'Home',
     component: Home,
   },
   {
-    path: '/pwa-project/login', component: LoginPage,
+    path: '/login', component: LoginPage,
   },
   {
-    path: '/pwa-project/account/verify/:token', component: Verify
+    path: '/account/verify/:token', component: Verify
   },
   {
-    path: '/pwa-project/organization/:name',
+    path: '/organization/:name',
     name: 'MainLoggedPage',
     component: MainLoggedPage,
     // beforeEnter: async (to, from, next) => {
@@ -44,7 +44,7 @@ const routes = [
 ]
 
 export const router = new VueRouter({
-  mode: 'history',
+  mode: 'hash',
   routes
 })
 

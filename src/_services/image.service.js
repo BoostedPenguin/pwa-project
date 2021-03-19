@@ -62,7 +62,13 @@ function getImages() {
     return fetch(`${process.env.VUE_APP_BASE_BACKEND_ROOT}/image`, requestOptions)
         .then(handleResponse)
         .then(response => {
+            localStorage.setItem('images', JSON.stringify(response))
             return response
+        })
+        .catch(err => {
+            console.log("ERROR")
+            let images = JSON.parse(localStorage.getItem('images'))
+            return images
         })
 }
 

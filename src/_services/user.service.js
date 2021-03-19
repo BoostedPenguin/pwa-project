@@ -53,6 +53,8 @@ function getOrganization() {
     }
 
     return fetch(`${process.env.VUE_APP_BASE_BACKEND_ROOT}/organization`, requestOptions).then(handleResponse)
+        .catch(err => {
+        })
 }
 
 function createOrganization(data) {
@@ -68,7 +70,6 @@ function createOrganization(data) {
         .then(user => {
             if (user.token) {
                 localStorage.setItem('user', JSON.stringify(user))
-
             }
 
             return user

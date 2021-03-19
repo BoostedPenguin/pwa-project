@@ -46,7 +46,7 @@
       <v-divider></v-divider>
 
       <v-list dense nav>
-        <v-list-item link @click="currentPage = 'ShowPosts'">
+        <v-list-item link @click="onHomePage">
           <v-list-item-icon>
             <v-icon>mdi-home</v-icon>
           </v-list-item-icon>
@@ -71,6 +71,15 @@
 
           <v-list-item-content>
             <v-list-item-title>Take a photo</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item link to="/login">
+          <v-list-item-icon>
+            <v-icon>mdi-logout</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>Logout</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -208,6 +217,11 @@
       </v-card>
     </v-dialog>
 
+    <v-alert v-if="!getInternetStatus" dense outlined type="error">
+      There seems to be a problem with your connection to the server. Currently
+      browsing history mode.
+    </v-alert>
+
     <!-- Main content interface  -->
     <transition name="fade" mode="out-in">
       <component v-bind:is="currentComponent" />
@@ -269,11 +283,19 @@ export default {
     getAdminStatus() {
       return this.$store.state.authentication.user.admin;
     },
+    getInternetStatus() {
+      return this.$store.state.organization.status;
+    },
     getOrganizationParticipants() {
       return this.$store.state.organization.users;
     },
   },
   methods: {
+    onHomePage() {
+      if (this.currentPage == "ShowPosts") return;
+      this.$store.dispatch("organization/getOrganization");
+      this.currentPage = "ShowPosts";
+    },
     copyURL() {
       navigator.clipboard.writeText(this.addingUserVerificationLink);
     },

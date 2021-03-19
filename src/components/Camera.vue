@@ -59,6 +59,7 @@ export default {
   },
   methods: {
     StopRecording() {
+      if (this.mediaStream == null) return;
       this.mediaStream.getTracks().forEach(function (track) {
         track.enabled = false;
         track.stop();
