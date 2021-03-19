@@ -11,41 +11,40 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
+    path: '/pwa-project/',
     name: 'Home',
     component: Home,
   },
   {
-    path: '/login', component: LoginPage,
+    path: '/pwa-project/login', component: LoginPage,
   },
   {
-    path: '/account/verify/:token', component: Verify
+    path: '/pwa-project/account/verify/:token', component: Verify
   },
   {
-    path: '/organization/:name',
+    path: '/pwa-project/organization/:name',
     name: 'MainLoggedPage',
     component: MainLoggedPage,
-    beforeEnter: async (to, from, next) => {
-      const loggedIn = localStorage.getItem('user')
+    // beforeEnter: async (to, from, next) => {
+    //   const loggedIn = localStorage.getItem('user')
 
-      if (!loggedIn) {
-        return next('/login')
-      }
+    //   if (!loggedIn) {
+    //     return next('/login')
+    //   }
 
-      var z = await userService.getOrganization()
-      if (to.params.name == z.name) {
-        next()
-      }
-      else {
-        return next('/login')
-      }
-    }
+    //   var z = await userService.getOrganization()
+    //   if (to.params.name == z.name) {
+    //     next()
+    //   }
+    //   else {
+    //     return next('/login')
+    //   }
+    // }
   },
 ]
 
 export const router = new VueRouter({
   mode: 'history',
-  base: process.env.BASE_URL,
   routes
 })
 

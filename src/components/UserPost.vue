@@ -13,7 +13,7 @@
           <v-card-title>
             <v-avatar>
               <v-img
-                src="https://americanindependent.com/wp-content/uploads/2019/01/AP_19014569142266-1068x721.jpg"
+                src="https://image-cdn.essentiallysports.com/wp-content/uploads/20201011203851/cyberpunk2077-credit-cdprojektred%402000x1270-1-1110x705.jpg"
               ></v-img>
             </v-avatar>
             <span class="ml-2">{{ post.title }}</span>

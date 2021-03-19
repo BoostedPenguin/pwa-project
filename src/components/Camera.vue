@@ -1,29 +1,28 @@
 <template>
   <div>
-    <div v-show="videoDevices.length > 0" class="container">
-      <v-row class="justify-center">
-        <video
-          class="video"
-          :class="facingMode === 'user' ? 'front' : ''"
-          ref="video"
-        />
-        <canvas style="display: none" ref="canva" />
-        <!-- <button
-          v-if="videoDevices.length > 1"
-          class="button is-rounded is-outlined switch-button"
-          @click="switchCamera"
-          :disabled="switchingCamera"
-        >
-          Swap
-        </button> -->
-      </v-row>
+    <div v-if="takingPicture">
+      <div v-show="videoDevices.length > 0" class="container">
+        <v-row class="justify-center">
+          <video
+            class="video"
+            :class="facingMode === 'user' ? 'front' : ''"
+            ref="video"
+          />
+          <canvas style="display: none" ref="canva" />
+        </v-row>
 
-      <v-row class="justify-center mt-4">
-        <v-btn elevation="2" outlined @click="TakePhoto">Shoot</v-btn>
-      </v-row>
-      <photos-gallery class="gallery" :photos="photos" />
+        <v-row class="justify-center mt-4">
+          <v-btn elevation="2" outlined @click="TakePhoto">Shoot</v-btn>
+        </v-row>
+      </div>
+      <div v-show="videoDevices == 0">No camera on this device</div>
     </div>
-    <div v-show="videoDevices == 0">No camera on this device</div>
+    <photos-gallery
+      v-else-if="!takingPicture"
+      class="gallery"
+      :photo="photo"
+      :takingPicture.sync="takingPicture"
+    />
   </div>
 </template>
 
@@ -35,7 +34,8 @@ export default {
   },
   data() {
     return {
-      photos: [],
+      takingPicture: true,
+      photo: null,
       mediaStream: null,
       videoDevices: [],
       facingMode: "environment",
@@ -43,7 +43,29 @@ export default {
       switchingCamera: false,
     };
   },
+
+  watch: {
+    takingPicture: {
+      handler: function (oldValue, newValue) {
+        if (newValue) {
+          return this.StopRecording();
+        }
+        this.GetDevicesMounted();
+      },
+    },
+  },
+  beforeDestroy() {
+    this.StopRecording();
+  },
   methods: {
+    StopRecording() {
+      this.mediaStream.getTracks().forEach(function (track) {
+        track.enabled = false;
+        track.stop();
+      });
+      this.$refs.video = null;
+      console.log(this.mediaStream.getTracks());
+    },
     async StartRecording(facingMode) {
       this.facingMode = facingMode;
       let video = this.$refs.video;
@@ -69,10 +91,11 @@ export default {
         ctx.drawImage(video, 0, 0);
       }
       ctx.restore();
-      this.photos.push({
+      this.photo = {
         id: this.counter++,
         src: canva.toDataURL("image/png"),
-      });
+      };
+      this.takingPicture = false;
     },
     async switchCamera() {
       this.switchingCamera = true;
@@ -85,15 +108,18 @@ export default {
       );
       this.switchingCamera = false;
     },
+    async GetDevicesMounted() {
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      this.videoDevices = devices.filter((d) => d.kind === "videoinput");
+
+      if (this.videoDevices.length == 0) return;
+      await this.StartRecording(
+        this.videoDevices.length === 1 ? "user" : "environment"
+      );
+    },
   },
   async mounted() {
-    const devices = await navigator.mediaDevices.enumerateDevices();
-    this.videoDevices = devices.filter((d) => d.kind === "videoinput");
-
-    if (this.videoDevices.length == 0) return;
-    await this.StartRecording(
-      this.videoDevices.length === 1 ? "user" : "environment"
-    );
+    await this.GetDevicesMounted();
   },
 };
 </script>
@@ -137,9 +163,5 @@ export default {
 .photo-button {
   font-size: 4vh;
   color: black;
-}
-.gallery {
-  grid-column: left / right;
-  grid-row: bottom / end;
 }
 </style>
